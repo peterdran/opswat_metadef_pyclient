@@ -6,7 +6,7 @@ def open_arbitrary_file(file_name):
     with open(file_name, mode='rb') as file_object:
         arb_file = file_object.read()
         file_object.close()
-    return arb_file
+    return arb_file #this might not work, what's the dtype anyways?
 
 def hash_file(file_bytes_object):
     return sha256(file_bytes_object)
