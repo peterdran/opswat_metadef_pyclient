@@ -2,7 +2,7 @@
 
 
 
-url = "https://api.metadefender.com/v4/file/" #id for a test? bzIxMDMwNi00VS0wY2VFV3ZhaUc4Nnk5TkU
+url = "https://api.metadefender.com/v4/file/" #file id for a test? bzIxMDMwNi00VS0wY2VFV3ZhaUc4Nnk5TkU
 
 headers = {
     'apikey': #do not fill out! must read from the cli or a file...
