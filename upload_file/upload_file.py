@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
-#TODO write tests
-import requests
 
-url = "https://api.metadefender.com/v4/file/bzIxMDMwNi00VS0wY2VFV3ZhaUc4Nnk5TkU"
+
+url = "https://api.metadefender.com/v4/file/" #id for a test? bzIxMDMwNi00VS0wY2VFV3ZhaUc4Nnk5TkU
 
 headers = {
-    'apikey': 
+    'apikey': #do not fill out! must read from the cli or a file...
 }
 
 response = requests.request("GET", url, headers=headers)
 
 print(response.text)
+
+if __name__ == '__main__':
+    
