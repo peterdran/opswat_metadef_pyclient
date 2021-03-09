@@ -1,5 +1,87 @@
 import requests
 
+class MetadefAPI:
+    base_api_string = "https://api.metadefender.com/v4/"
+    
+    def __init__(self, endpoint_uri, api_key):
+        self.endpoint_uri = endpoint_uri
+        self.api_key = api_key
+    
+    def call_api(api_operation, parameters=""):
+        pass
+    
+    #TODO what methods would work best here?
+
+class MetadefFile(MetadefAPI):
+    
+    def __init__(self, api_key, file_name, file_hash, file_data, file_remote_id):
+        super().__init__("file/", api_key)
+        self.file_name = file_name
+        self.file_hash = file_hash
+        self.file_data = file_data
+        self.file_remote_id = file_remote_id
+        #self.file_attributes = None
+    
+    def lookup_by_hash():
+        if self.file_response is None:
+            if self.file_hash is not None:
+                self.endpoint_uri = self.base_api_string + "hash/" + self.file_hash #TODO use string templates to prevent code execution
+                
+                headers = {
+                'apikey': self.api_key
+                }
+                #TODO try..get this
+                self.file_response = requests.request("GET", api_url_str, headers=headers)
+            else:
+                #TODO throw exception
+        return 
+    
+    def hash_exists_remotely():
+        self.lookup_by_hash()
+        #logic goes here
+    
+    def upload_file():
+        if self.hash_response is not None:
+            self.endpoint_uri = self.base_api_string + "file/" #TODO use string templates to prevent code execution
+            
+            headers = {
+                'apikey': self.api_key,
+                'content-type': 'application/octet-stream'
+            }
+            
+            #TODO where to store this response?
+            requests.request("GET", api_url_str, headers=headers)
+        else
+            #don't?
+        return
+    
+    def query_file():
+        if self.file_remote_id is not None:
+            self.endpoint_uri = self.base_api_string + "file/" + self.file_remote_id #TODO use string templates to prevent code execution
+            
+            headers = {
+            'apikey': self.api_key
+            }
+            #TODO try..get this
+            self.file_response = requests.request("GET", api_url_str, headers=headers)
+        else:
+            #TODO throw exception
+        return 
+    
+    def query_progress():
+        pass
+    
+    
+
+
+
+
+
+
+
+
+
+
 
 def metadef_api_lookup_by_hash(hash_str, api_key):
     api_url_str = "https://api.metadefender.com/v4/"
@@ -48,37 +130,4 @@ def metadef_api_progress_poll(file_id_str):
     
     
     
-class MetadefAPI:
-    base_api_string = "https://api.metadefender.com/v4/"
-    
-    def __init__(self, endpoint_uri, api_key):
-        self.endpoint_uri = endpoint_uri
-        self._api_key = api_key
-    
-    def call_api(api_operation, parameters=""):
-        pass
-    
-    #TODO what methods would work best here?
 
-class MetadefFile(MetadefAPI)
-    
-    def __init__(self, file_name, file_hash, file_data)
-        super().__init__("MetadefAPI")
-        self.file_name = file_name
-        self.file_hash = file_hash
-        self.file_data = file_data
-        #self.file_attributes = None
-    
-    def lookup_by_hash():
-        return self.file_hash  #TODO clarify scope of method
-    
-    def upload_file():
-        
-    
-    def query_file():
-        
-    
-    def query_progress():
-        
-    
-    
