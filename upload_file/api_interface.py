@@ -57,17 +57,18 @@ class MetadefFile(MetadefAPI):
     
     def upload_file(self):
         #if not self.hash_exists_remotely(): #TODO Refactor this spaghetti
-            endpoint_uri = self.BASE_API_STRING + "file/" #TODO use string templates to prevent code execution
-            
-            headers = {
-                'apikey': self.api_key,
-                'content-type': 'application/octet-stream'
-            }
-            
-            #TODO where to store this response?
-            requests.request("GET", endpoint_uri, headers=headers)
-        else:
-            pass #don't?
+        endpoint_uri = self.BASE_API_STRING + "file/" #TODO use string templates to prevent code execution
+        
+        headers = {
+            'apikey': self.api_key,
+            'filename': self.file_name,
+            'content-type': 'application/octet-stream'
+        }
+        
+        #TODO where to store this response?
+        print(requests.post(endpoint_uri, headers=headers, data=self.file_data).json())
+        #else:
+        #    pass #don't?
         return
     
     def query_file(self):
@@ -86,7 +87,8 @@ class MetadefFile(MetadefAPI):
         #TODO try..get this
         self.file_response = requests.request("GET", endpoint_uri, headers=headers)
         return
+    
     def show_last_response(self):
-        return self.file_response
+        return self.file_response.json()
 
 
