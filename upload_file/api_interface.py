@@ -42,4 +42,43 @@ def metadef_api_progress_poll(file_id_str):
     #TODO try..get this statement
     response = requests.request("GET", api_url_str, headers=headers)
     
+    
+    
+    
+    
+    
+    
+class MetadefAPI:
+    base_api_string = "https://api.metadefender.com/v4/"
+    
+    def __init__(self, endpoint_uri, api_key):
+        self.endpoint_uri = endpoint_uri
+        self._api_key = api_key
+    
+    def call_api(api_operation, parameters=""):
+        pass
+    
+    #TODO what methods would work best here?
 
+class MetadefFile(MetadefAPI)
+    
+    def __init__(self, file_name, file_hash, file_data)
+        super().__init__("MetadefAPI")
+        self.file_name = file_name
+        self.file_hash = file_hash
+        self.file_data = file_data
+        #self.file_attributes = None
+    
+    def lookup_by_hash():
+        return self.file_hash  #TODO clarify scope of method
+    
+    def upload_file():
+        
+    
+    def query_file():
+        
+    
+    def query_progress():
+        
+    
+    
