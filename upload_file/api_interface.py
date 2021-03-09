@@ -29,27 +29,34 @@ class MetadefFile(MetadefAPI):
         self.file_remote_id = None
         self.file_response = None
         #maybe a in_progress boolean?
-    
+    """TODO rest of docstring; returns: HTTP status code"""
     def lookup_by_hash(self):
-        if self.file_response is None:
-            if self.file_hash is not None:
-                endpoint_uri = self.BASE_API_STRING + "hash/" + self.file_hash #TODO use string templates to prevent code execution
-                
-                headers = {
-                'apikey': self.api_key
-                }
-                #TODO try..get this
-                self.file_response = requests.request("GET", endpoint_uri, headers=headers)
-            else:
-                pass#TODO throw exception
+        if self.file_hash is not None:
+            endpoint_uri = self.BASE_API_STRING + "hash/" + self.file_hash #TODO use string templates to prevent code execution
+            
+            headers = {
+            'apikey': self.api_key
+            }
+            #TODO try..get this
+            self.file_response = requests.request("GET", endpoint_uri, headers=headers)
+            self.file_response.raise_for_status()
+            return self.file_response.status_code
+            #return requests.request("GET", endpoint_uri, headers=headers)
+        else:
+            #raise ArgumentError
+            pass
         return
     
     def hash_exists_remotely(self):
-        print(self.lookup_by_hash())
+        try:
+            self.lookup_by_hash()
+        except requests.exceptions.HTTPError:
+            return False
+        return True
         #logic to return a boolean goes here
     
     def upload_file(self):
-        if self.hash_response is not None:
+        #if not self.hash_exists_remotely(): #TODO Refactor this spaghetti
             endpoint_uri = self.BASE_API_STRING + "file/" #TODO use string templates to prevent code execution
             
             headers = {

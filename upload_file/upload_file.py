@@ -40,12 +40,13 @@ if __name__ == '__main__':
     hash_exists_bool = metadef_file.hash_exists_remotely()
     
     #logic fork: if found show results via id else
+    print(hash_exists_bool)
     if not hash_exists_bool:
         #upload file via API
         metadef_file.upload_file()
         #poll for progress via API
         
-    
-    metadef_file.show_last_response()
+        
     #show results via new id
+    print(metadef_file.show_last_response())
 
