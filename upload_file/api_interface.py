@@ -6,12 +6,20 @@ def metadef_api_lookup_by_hash(hash_str, api_key):
     headers = {
     'apikey': api_key
     }
+    
+    
+    #TODO try..get this statement
+    response = requests.request("GET", api_url_str, headers=headers)
 
 def metadef_api_upload_file(file_content_bin, file_name_str, api_key):
     api_url_str = "https://api.metadefender.com/v4/"
     headers = {
     'apikey': api_key
     }
+    
+    
+    #TODO try..get this statement
+    response = requests.request("GET", api_url_str, headers=headers)
 
 def metadef_api_query_file_results(file_id_str, api_key):
     
@@ -34,3 +42,4 @@ def metadef_api_progress_poll(file_id_str):
     #TODO try..get this statement
     response = requests.request("GET", api_url_str, headers=headers)
     
+

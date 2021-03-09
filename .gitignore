@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#api keys anti-leak
+keyfile
+key_file
+api_key
+apikey
+api key
