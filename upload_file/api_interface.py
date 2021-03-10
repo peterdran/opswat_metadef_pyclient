@@ -4,7 +4,6 @@ class MetadefAPI:
     BASE_API_STRING = "https://api.metadefender.com/v4/"
     
     def __init__(self, api_key):
-        #self.endpoint_uri = None
         self.api_key = api_key
     
 
@@ -25,6 +24,7 @@ class MetadefFile(MetadefAPI):
         self.file_data = file_data
         self.file_remote_id = None
         self.file_response = None
+        self.file_progress = None
         #maybe a in_progress boolean?
     """TODO rest of docstring; returns: HTTP status code"""
     def lookup_by_hash(self):
@@ -34,14 +34,12 @@ class MetadefFile(MetadefAPI):
             headers = {
             'apikey': self.api_key
             }
-            #TODO try..get this
+            
             self.file_response = requests.get(endpoint_uri, headers=headers)
             self.file_response.raise_for_status()
-            return self.file_response.status_code
-            #return requests.request("GET", endpoint_uri, headers=headers)
-        else:
-            #raise ArgumentError
-            pass
+            self.file_remote_id = self.file_response.json()['data_id']
+            return self.file_remote_id
+        
         return
     
     def hash_exists_remotely(self):
@@ -52,8 +50,7 @@ class MetadefFile(MetadefAPI):
         return True
     
     def upload_file(self):
-        #if not self.hash_exists_remotely(): #TODO Refactor this spaghetti
-        endpoint_uri = self.BASE_API_STRING + "file/" #TODO use string templates to prevent code execution
+        endpoint_uri = self.BASE_API_STRING + "file/"
         
         headers = {
             'apikey': self.api_key,
@@ -61,29 +58,28 @@ class MetadefFile(MetadefAPI):
             'content-type': 'application/octet-stream'
         }
         
-        #TODO where to store this response?
-        self.file_response = requests.post(endpoint_uri, headers=headers, data=self.file_data).json()
-        #else:
-        #    pass #don't?
+        self.file_response = requests.post(endpoint_uri, headers=headers, data=self.file_data)
         self.file_response.raise_for_status()
-        return self.file_response.status_code
-    
-    def query_file(self):
-        if self.file_remote_id is not None:
-            self.query_progress()
-        else:
-            pass #TODO throw exception
-        return
+        self.file_remote_id = self.file_response.json()['data_id']
+        
+        return self.file_remote_id
     
     def query_progress(self):
-        endpoint_uri = self.BASE_API_STRING + "file/" + self.file_remote_id #TODO use string templates to prevent code execution
+        endpoint_uri = self.BASE_API_STRING + "file/" + self.file_remote_id
         
         headers = {
         'apikey': self.api_key
         }
-        #TODO try..get this
+        
         self.file_response = requests.get(endpoint_uri, headers=headers)
-        return
+        self.file_response.raise_for_status()
+        
+        progress_stat = self.file_response.json()['scan_results']['progress_percentage']
+        print("Progress %:", progress_stat)
+        if progress_stat < 100:
+            return False
+        else:
+            return True
     
     def show_last_response(self):
         return self.file_response.json()

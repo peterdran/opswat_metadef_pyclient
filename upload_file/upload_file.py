@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 import sys
+import time
 
 import file_helper
 import api_interface
 
+
+"""Formats and prints the scan results to be readable for humans"""
 def result_formatter(dict_obj):
-    #for header in dict_obj:
-    #    print(header)
-    print(dict_obj['file_info']['display_name'])
-    #print()
+    print("filename:", dict_obj['file_info']['display_name'])
+    print("overall_status:", dict_obj['scan_results']['scan_all_result_a'])
+    
     scan_body_resp = dict_obj['scan_results']['scan_details']
     for engine in scan_body_resp:
         print('\nengine:', engine)
@@ -20,8 +22,7 @@ def result_formatter(dict_obj):
                 else:
                     formatted_string_val = raw_engine_result_val
                 print(engine_results,":", formatted_string_val)
-            #for results_values in scan_body_resp[engine][engine_results]:
-                #print(results_values)
+
 
 if __name__ == '__main__':
     #(pre-task) handle args
@@ -53,20 +54,36 @@ if __name__ == '__main__':
     metadef_file = api_interface.MetadefFile(api_key_str, arg_name_str, file_sha256_str, input_file_bin)
     
     #lookup hash via API
-    hash_exists_bool = metadef_file.hash_exists_remotely()
+    try:
+        hash_exists_bool = metadef_file.hash_exists_remotely()
+    except requests.exceptions.ConnectionError:
+        print("Network error on requesting hash from API")
+        sys.exit(4)
     
     #logic fork: if found show results via id else
-    print(hash_exists_bool)
+    #print(hash_exists_bool)
+    #print(metadef_file.file_remote_id)
     if not hash_exists_bool:
         #upload file via API
-        metadef_file.upload_file()
+        try:
+            print(metadef_file.upload_file())
+        except requests.exceptions.ConnectionError:
+            print("Network error on uploading file")
+            sys.exit(4)
         #poll for progress via API
-        
+        scannning_is_done = False
+        while not scannning_is_done:
+            try:
+                scannning_is_done = metadef_file.query_progress()
+            except requests.exceptions.ConnectionError:
+                print("Network error on querying progress")
+            finally:
+                time.sleep(1)
         
     #show results via new id
     result_body = metadef_file.show_last_response()
-    print(result_body)
-    print(result_formatter(result_body))
+    #print(result_body)
+    result_formatter(result_body)
     
     
 
