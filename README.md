@@ -5,9 +5,9 @@
 
 ### Overview
 
-The program tests the provided file against MedaDefender Cloud's API service. 
-The program is written in python 3. 
-An API key from MedaDefender Cloud is required to be placed into a keyfile (see the Installation section below). 
+The program tests the provided file against MetaDefender Cloud's API service. 
+This program is written in python 3. 
+An API key from MetaDefender Cloud is required to be placed into a keyfile (see the Installation section below). 
 
 ```
 python3 upload_file/upload_file.py [FILE]
