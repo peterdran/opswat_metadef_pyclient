@@ -1,4 +1,4 @@
-# OPSWAT Metadefender python client
+# OPSWAT Metadefender Python Client
 ##### opswat_metadef_pyclient
 #### By: Peter Dranishnikov
 ---
