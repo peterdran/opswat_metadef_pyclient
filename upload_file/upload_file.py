@@ -35,7 +35,7 @@ if __name__ == '__main__':
     
     #(pre-task) get api key from a keyfile TODO document
     try:
-        api_key_str = file_helper.open_arbitrary_file("../keyfile", "r").splitlines()[0]
+        api_key_str = file_helper.open_arbitrary_file("keyfile", "r").splitlines()[0]
     except FileNotFoundError:
         print("API keyfile not found. Please supply a keyfile?")
         sys.exit(3)

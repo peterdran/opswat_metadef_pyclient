@@ -23,11 +23,11 @@ The program assumes that python3 and the requests library are installed.
 
 ```
 git clone https://github.com/peterdran/opswat_metadef_pyclient.git
-cd opswat_metadef_pyclient
+cd opswat_metadef_pyclient/upload_file
 
 nano keyfile     #insert api key into the keyfile somehow
 
-python3 upload_file/upload_file.py [FILE]
+python3 upload_file.py [FILE]
 ```
 
 ### Known Issues
