@@ -25,7 +25,6 @@ def result_formatter(dict_obj):
 
 
 if __name__ == '__main__':
-    #(pre-task) handle args
     try:
         arg_name_str = sys.argv[1]
     except IndexError:
@@ -39,38 +38,29 @@ if __name__ == '__main__':
         print("API keyfile not found. Please supply a keyfile?")
         sys.exit(3)
     
-    #print(api_key_str)
-    #open file
     try:
         input_file_bin = file_helper.open_arbitrary_file(arg_name_str, "rb")
     except FileNotFoundError:
         print("File not found.")
         sys.exit(2)
     
-    #compute hash
-    file_sha256_str = file_helper.hash_file(input_file_bin).hexdigest()
-    #print(file_sha256_str)
+    file_sha256_str = file_helper.hash_file(input_file_bin)
     
     metadef_file = api_interface.MetadefFile(api_key_str, arg_name_str, file_sha256_str, input_file_bin)
     
-    #lookup hash via API
     try:
         hash_exists_bool = metadef_file.hash_exists_remotely()
     except requests.exceptions.ConnectionError:
         print("Network error on requesting hash from API")
         sys.exit(4)
     
-    #logic fork: if found show results via id else
-    #print(hash_exists_bool)
-    #print(metadef_file.file_remote_id)
     if not hash_exists_bool:
-        #upload file via API
         try:
             print(metadef_file.upload_file())
         except requests.exceptions.ConnectionError:
             print("Network error on uploading file")
             sys.exit(4)
-        #poll for progress via API
+    
         scannning_is_done = False
         while not scannning_is_done:
             try:
@@ -80,9 +70,7 @@ if __name__ == '__main__':
             finally:
                 time.sleep(1)
         
-    #show results via new id
     result_body = metadef_file.show_last_response()
-    #print(result_body)
     result_formatter(result_body)
     
     
