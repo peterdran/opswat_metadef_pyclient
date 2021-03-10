@@ -2,12 +2,14 @@
 import sys
 import time
 
+import requests
+
 import file_helper
 import api_interface
 
 
-"""Formats and prints the scan results to be readable for humans"""
 def result_formatter(dict_obj):
+    """Formats and prints the scan results to be readable for humans"""
     print("filename:", dict_obj['file_info']['display_name'])
     print("overall_status:", dict_obj['scan_results']['scan_all_result_a'])
     
@@ -46,7 +48,10 @@ if __name__ == '__main__':
     
     file_sha256_str = file_helper.hash_file(input_file_bin)
     
-    metadef_file = api_interface.MetadefFile(api_key_str, arg_name_str, file_sha256_str, input_file_bin)
+    metadef_file = api_interface.MetadefFile(api_key_str,
+                                             arg_name_str,
+                                             file_sha256_str,
+                                             input_file_bin)
     
     try:
         hash_exists_bool = metadef_file.hash_exists_remotely()
@@ -72,6 +77,4 @@ if __name__ == '__main__':
         
     result_body = metadef_file.show_last_response()
     result_formatter(result_body)
-    
-    
 
