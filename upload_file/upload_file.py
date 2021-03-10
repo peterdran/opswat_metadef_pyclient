@@ -4,8 +4,24 @@ import sys
 import file_helper
 import api_interface
 
-def result_formatter(json_obj):
-    return None
+def result_formatter(dict_obj):
+    #for header in dict_obj:
+    #    print(header)
+    print(dict_obj['file_info']['display_name'])
+    #print()
+    scan_body_resp = dict_obj['scan_results']['scan_details']
+    for engine in scan_body_resp:
+        print('\nengine:', engine)
+        for engine_results in scan_body_resp[engine]:
+            raw_engine_result_val = scan_body_resp[engine][engine_results]
+            if engine_results != "scan_time":
+                if engine_results == "threat_found" and raw_engine_result_val == "":
+                    formatted_string_val = "Clean"
+                else:
+                    formatted_string_val = raw_engine_result_val
+                print(engine_results,":", formatted_string_val)
+            #for results_values in scan_body_resp[engine][engine_results]:
+                #print(results_values)
 
 if __name__ == '__main__':
     #(pre-task) handle args
@@ -48,5 +64,9 @@ if __name__ == '__main__':
         
         
     #show results via new id
-    print(metadef_file.show_last_response())
+    result_body = metadef_file.show_last_response()
+    print(result_body)
+    print(result_formatter(result_body))
+    
+    
 

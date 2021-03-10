@@ -7,19 +7,16 @@ class MetadefAPI:
         #self.endpoint_uri = None
         self.api_key = api_key
     
-    def call_api(api_operation, parameters=""):
-        pass
-    
-    #TODO what methods would work best here (if any?)
 
 class MetadefFile(MetadefAPI):
     
-    def __init__(self, api_key, file_name, file_hash, file_data, file_remote_id):
-        super().__init__(api_key)
-        self.file_name = file_name
-        self.file_hash = file_hash
-        self.file_data = file_data
-        self.file_remote_id = file_remote_id
+    def __init__(self):
+        super().__init__(None)
+        self.file_name = None
+        self.file_hash = None
+        self.file_data = None
+        self.file_remote_id = None
+        self.file_response = None
     
     def __init__(self, api_key, file_name, file_hash, file_data):
         super().__init__(api_key)
@@ -38,7 +35,7 @@ class MetadefFile(MetadefAPI):
             'apikey': self.api_key
             }
             #TODO try..get this
-            self.file_response = requests.request("GET", endpoint_uri, headers=headers)
+            self.file_response = requests.get(endpoint_uri, headers=headers)
             self.file_response.raise_for_status()
             return self.file_response.status_code
             #return requests.request("GET", endpoint_uri, headers=headers)
@@ -53,7 +50,6 @@ class MetadefFile(MetadefAPI):
         except requests.exceptions.HTTPError:
             return False
         return True
-        #logic to return a boolean goes here
     
     def upload_file(self):
         #if not self.hash_exists_remotely(): #TODO Refactor this spaghetti
@@ -66,10 +62,11 @@ class MetadefFile(MetadefAPI):
         }
         
         #TODO where to store this response?
-        print(requests.post(endpoint_uri, headers=headers, data=self.file_data).json())
+        self.file_response = requests.post(endpoint_uri, headers=headers, data=self.file_data).json()
         #else:
         #    pass #don't?
-        return
+        self.file_response.raise_for_status()
+        return self.file_response.status_code
     
     def query_file(self):
         if self.file_remote_id is not None:
@@ -85,7 +82,7 @@ class MetadefFile(MetadefAPI):
         'apikey': self.api_key
         }
         #TODO try..get this
-        self.file_response = requests.request("GET", endpoint_uri, headers=headers)
+        self.file_response = requests.get(endpoint_uri, headers=headers)
         return
     
     def show_last_response(self):
