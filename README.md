@@ -1,9 +1,9 @@
 # OPSWAT Metadefender python client
 ##### opswat_metadef_pyclient
-## Peter Dranishnikov
+#### By: Peter Dranishnikov
 ---
 
-#### Overview
+### Overview
 
 The program tests the provided file against MedaDefender Cloud's API service. 
 The program is written in python 3. 
@@ -18,7 +18,7 @@ python3 upload_file/upload_file.py [FILE]
 `[FILE]`: The file to be examined. Any file type is acceptable. 
 Repeat program operation with the same file will not reupload the file after subsequent runs. 
 
-#### Installation
+### Installation
 The program assumes that python3 and the requests library are installed. 
 
 ```
@@ -30,9 +30,10 @@ nano keyfile     #insert api key into the keyfile somehow
 python3 upload_file/upload_file.py [FILE]
 ```
 
-#### Known Issues
+### Known Issues
 * When using relative file paths and the file upload is performed, the full path name is used instead of the base file name. 
 * If python code is in the file name, then python code execution is theoretically possible. This bug has not been thoroughly tested. 
 * The keyfile name and location cannot be changed. 
+* The unit tests are not operational. Their functionality is described for future implementation. 
 
 
